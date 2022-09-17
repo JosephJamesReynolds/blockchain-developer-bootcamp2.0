@@ -8,7 +8,7 @@ import "./Token.sol";
 // Deposit Tokens [X]
 // Withdraw Tokens [X]
 // Check balances [X]
-// Make Orders []
+// Make Orders [X]
 // Cancel Orders []
 // Fill Orders []
 // Charge Fees []
@@ -20,6 +20,8 @@ contract Exchange {
 	mapping(address => mapping(address => uint256)) public tokens;
 	mapping(uint256 => _Order) public orders;
 	uint256 public orderCount;
+	mapping(uint256 => bool) public orderCancelled; // True or false (bool)
+
 
 	// Orders mapping
 
@@ -142,6 +144,14 @@ contract Exchange {
 		 	_amountGive,
 		 	block.timestamp 
 		 );
+	}
+
+	function cancelOrder(uint256 _id) public {
+		// Fetching the order 
+		_Order storage _order = orders[_id];
+		
+		// Cancel the order
+		orderCancelled[_id] = true;
 	}
 
 }

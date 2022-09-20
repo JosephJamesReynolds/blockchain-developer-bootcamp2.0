@@ -9,7 +9,7 @@ import "./Token.sol";
 // Withdraw Tokens [X]
 // Check balances [X]
 // Make Orders [X]
-// Cancel Orders []
+// Cancel Orders [X]
 // Fill Orders []
 // Charge Fees []
 // Track Fee Account [X]
@@ -46,7 +46,16 @@ contract Exchange {
 		uint256 amountGive, 
 		uint256 timestamp 
 	);
-
+	event Cancel (
+		uint256 id, 
+		address user, 
+		address tokenGet, 
+		uint256 amountGet, 
+		address tokenGive, 
+		uint256 amountGive, 
+		uint256 timestamp 
+	);
+		
 	// A way to model the order
 	struct _Order {
 		// Attributes of an order
@@ -149,9 +158,26 @@ contract Exchange {
 	function cancelOrder(uint256 _id) public {
 		// Fetching the order 
 		_Order storage _order = orders[_id];
-		
+
+		// Ensure the caller of the function is the owner of the order
+		require(address(_order.user) == msg.sender);
+
+		// Order must exist
+		require(_order.id == _id);
+
 		// Cancel the order
 		orderCancelled[_id] = true;
+
+		// Emit event
+		emit Cancel(
+			_order.id, 
+		 	msg.sender, 
+		 	_order.tokenGet, 
+		 	_order.amountGet,
+		 	_order.tokenGive,
+		 	_order.amountGive,
+		 	block.timestamp 
+		 );
 	}
 
 }

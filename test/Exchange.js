@@ -214,6 +214,17 @@ describe('Exchange', () => {
         transaction = await exchange.connect(user1).depositToken(token1.address, amount)
         result = await transaction.wait()
 
+        // Give tokens to user2
+        transaction = await token2.connect(deployer).transfer(user2.address, tokens(100))
+        result = await transaction.wait()
+
+        // User2 deposits tokens
+		transaction = await token2.connect(user2).approve(exchange.address, tokens(2))
+        result = await transaction.wait()
+
+        transaction = await exchange.connect(user2).depositToken(token2.address, tokens(2))
+        result = await transaction.wait()
+
         // Make an order
         transaction = await exchange.connect(user1).makeOrder(token2.address, amount, token1.address, amount)
      	result = await transaction.wait()
@@ -268,6 +279,21 @@ describe('Exchange', () => {
 				})
 			})
 		
+		})
+
+		describe('Filling orders', async () =>{
+			beforeEach(async () => {
+				// user 2 fills order
+				transaction = await exchange.connect(user2).fillOrder('1')
+				result = await transaction.wait()
+			})
+
+
+
+			it ('executes the trade and charges fees', async () => {
+				// Ensure trade happens...
+			})
+
 		})
 	})
 })

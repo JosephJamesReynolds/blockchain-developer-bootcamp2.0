@@ -10,8 +10,8 @@ import "./Token.sol";
 // Check balances [X]
 // Make Orders [X]
 // Cancel Orders [X]
-// Fill Orders []
-// Charge Fees []
+// Fill Orders [X]
+// Charge Fees [X]
 // Track Fee Account [X]
 
 contract Exchange {

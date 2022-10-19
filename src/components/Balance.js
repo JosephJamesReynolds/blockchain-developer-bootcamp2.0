@@ -1,16 +1,18 @@
 import { useEffect, useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import dapp from '../assets/dapp.svg';
 import eth from '../assets/eth.svg';
 
-import {
-  loadBalances,
-  transferTokens
+
+import { 
+loadBalances,
+transferTokens
 } from '../store/interactions';
 
 const Balance = () => {
   const [isDeposit, setIsDeposit] = useState(true)
+  const [isWithdraw, setIsWithdraw] = useState(true)
   const [token1TransferAmount, setToken1TransferAmount] = useState(0)
   const [token2TransferAmount, setToken2TransferAmount] = useState(0)
 
@@ -23,12 +25,12 @@ const Balance = () => {
   const exchangeBalances = useSelector(state => state.exchange.balances)
   const transferInProgress = useSelector(state => state.exchange.transferInProgress)
 
-  const tokens = useSelector(state => state.tokens.contracts)
-  const symbols = useSelector(state => state.tokens.symbols)
-  const tokenBalances = useSelector(state => state.tokens.balances)
-
   const depositRef = useRef(null)
   const withdrawRef = useRef(null)
+
+  const tokens = useSelector(state => state.tokens.contracts)  
+  const symbols = useSelector(state => state.tokens.symbols)
+  const tokenBalances = useSelector(state => state.tokens.balances)
 
   const tabHandler = (e) => {
     if(e.target.className !== depositRef.current.className) {
@@ -43,26 +45,41 @@ const Balance = () => {
   }
 
   const amountHandler = (e, token) => {
-    if (token.address === tokens[0].address) {
-      setToken1TransferAmount(e.target.value)
-    } else {
-      setToken2TransferAmount(e.target.value)
+      if (token.address === tokens[0].address) {
+        setToken1TransferAmount(e.target.value)
+      } else {
+        setToken2TransferAmount(e.target.value)
+      }
     }
-  }
 
   const depositHandler = (e, token) => {
     e.preventDefault()
+      if (token.address === tokens[0].address) {
+        transferTokens(provider, exchange, 'Deposit', token, token1TransferAmount, dispatch)
+        setToken1TransferAmount(0)
+      } else {
+        transferTokens(provider, exchange, 'Deposit', token, token2TransferAmount, dispatch)
+        setToken2TransferAmount(0)
 
-    if (token.address === tokens[0].address) {
-      transferTokens(provider, exchange, 'Deposit', token, token1TransferAmount, dispatch)
-      setToken1TransferAmount(0)
-    } else {
-      transferTokens(provider, exchange, 'Deposit', token, token2TransferAmount, dispatch)
-      setToken2TransferAmount(0)
+      }
     }
-  }
+  const withdrawHandler = (e, token) => {
+    e.preventDefault()
+      if (token.address === tokens[0].address) {
+        transferTokens(provider, exchange, 'Withdraw', token, token1TransferAmount, dispatch)
+        setToken1TransferAmount(0)
+      } else {
+        transferTokens(provider, exchange, 'Withdraw', token, token2TransferAmount, dispatch)
+        setToken2TransferAmount(0)
 
-  useEffect(() => {
+      }
+    }
+    
+
+
+
+
+  useEffect (() => {
     if(exchange && tokens[0] && tokens[1] && account) {
       loadBalances(exchange, tokens, account, dispatch)
     }
@@ -87,22 +104,24 @@ const Balance = () => {
           <p><small>Exchange</small><br />{exchangeBalances && exchangeBalances[0]}</p>
         </div>
 
-        <form onSubmit={(e) => depositHandler(e, tokens[0])}>
+        <form onSubmit={isDeposit ? (e) => depositHandler(e, tokens[0]) : (e) => withdrawHandler(e, tokens[0])}>
           <label htmlFor="token0">{symbols && symbols[0]} Amount</label>
-          <input
-            type="text"
-            id='token0'
-            placeholder='0.0000'
-            value={token1TransferAmount === 0 ? '' : token1TransferAmount}
-            onChange={(e) => amountHandler(e, tokens[0])}/>
+          <input 
+          type="text"
+          id='token0'
+          placeholder='0.0000'
+          value={token1TransferAmount === 0 ? '' : token1TransferAmount}
+          onChange={(e) => amountHandler(e, tokens[0])}/>
+
 
           <button className='button' type='submit'>
-            {isDeposit ? (
-                <span>Deposit</span>
+             {isDeposit ? (
+              <span>Deposit</span>
             ) : (
-                <span>Withdraw</span>
+              <span>Withdraw</span>
             )}
           </button>
+
         </form>
       </div>
 
@@ -117,22 +136,24 @@ const Balance = () => {
           <p><small>Exchange</small><br />{exchangeBalances && exchangeBalances[1]}</p>
         </div>
 
-        <form onSubmit={(e) => depositHandler(e, tokens[1])}>
+        <form onSubmit={isDeposit ? (e) => withdrawHandler(e, tokens[1]) : (e) => withdrawHandler(e, tokens[1])}>
           <label htmlFor="token1"></label>
           <input
-            type="text"
-            id='token1'
-            placeholder='0.0000'
-            value={token2TransferAmount === 0 ? '' : token2TransferAmount}
-            onChange={(e) => amountHandler(e, tokens[1])}
+          type="text"
+          id='token1'
+          placeholder='0.0000'
+          value={token2TransferAmount === 0 ? '' : token2TransferAmount} 
+          onChange={(e) => amountHandler(e, tokens[1])}
           />
 
           <button className='button' type='submit'>
+            
             {isDeposit ? (
-                <span>Deposit</span>
+              <span>Deposit</span>
             ) : (
-                <span>Withdraw</span>
+              <span>Withdraw</span>
             )}
+
           </button>
         </form>
       </div>

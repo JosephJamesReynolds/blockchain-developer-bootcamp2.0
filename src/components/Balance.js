@@ -136,7 +136,7 @@ const Balance = () => {
           <p><small>Exchange</small><br />{exchangeBalances && exchangeBalances[1]}</p>
         </div>
 
-        <form onSubmit={isDeposit ? (e) => withdrawHandler(e, tokens[1]) : (e) => withdrawHandler(e, tokens[1])}>
+        <form onSubmit={isDeposit ? (e) => depositHandler(e, tokens[1]) : (e) => withdrawHandler(e, tokens[1])}>
           <label htmlFor="token1"></label>
           <input
           type="text"

@@ -12,7 +12,6 @@ transferTokens
 
 const Balance = () => {
   const [isDeposit, setIsDeposit] = useState(true)
-  const [isWithdraw, setIsWithdraw] = useState(true)
   const [token1TransferAmount, setToken1TransferAmount] = useState(0)
   const [token2TransferAmount, setToken2TransferAmount] = useState(0)
 
@@ -75,15 +74,11 @@ const Balance = () => {
       }
     }
     
-
-
-
-
   useEffect (() => {
     if(exchange && tokens[0] && tokens[1] && account) {
       loadBalances(exchange, tokens, account, dispatch)
     }
-  }, [exchange, tokens, account, transferInProgress])
+  }, [exchange, tokens, account, transferInProgress, dispatch])
 
   return (
     <div className='component exchange__transfers'>
@@ -137,7 +132,7 @@ const Balance = () => {
         </div>
 
         <form onSubmit={isDeposit ? (e) => depositHandler(e, tokens[1]) : (e) => withdrawHandler(e, tokens[1])}>
-          <label htmlFor="token1"></label>
+          <label htmlFor="token1">{symbols && symbols[1]} Amount</label>
           <input
           type="text"
           id='token1'

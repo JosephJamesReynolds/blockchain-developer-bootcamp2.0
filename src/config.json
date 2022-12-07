@@ -14,7 +14,19 @@
 		},
 		"explorerURL": "#"
 	},
-	"42": {
-		"explorerURL": "https://kovan.etherscan.io/"
+	"5": {
+		"exchange": {
+			"address": "0x1D95a2BE139DcAb5745E97F06c2D0eA2c1e13366"
+		},
+		"DApp": {
+			"address": "0xB8DdE1153477d395e950B872d9644955dAA8E2aC"
+		},
+		"mETH": {
+			"address": "0x132C47d28543D7B9dA8cF089295053f17399FfD1"
+		},
+		"mDAI": {
+			"address": "0x0b4a5cc93aea214001e3302950A6F234440C1B59"
+		},
+		"explorerURL": "https://goerli.etherscan.io/"
 	}
 }

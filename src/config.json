@@ -28,5 +28,20 @@
 			"address": "0x0b4a5cc93aea214001e3302950A6F234440C1B59"
 		},
 		"explorerURL": "https://goerli.etherscan.io/"
+	},
+		"80001": {
+		"exchange": {
+			"address": "0x5C7c9519cf590505d7f9A7006Da803D8A12DCAF6"
+		},
+		"DApp": {
+			"address": "0x6151133aE4E895745eb58FFE16c1054b612C7749"
+		},
+		"mETH": {
+			"address": "0xC332a9D96f0392f4F90158D930Af5b4C33E983bc"
+		},
+		"mDAI": {
+			"address": "0x810bb24a300350238edE27816412134972B60Ab7"
+		},
+		"explorerURL": "https://mumbai.polygonscan.com/"
 	}
 }

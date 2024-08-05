@@ -1,5 +1,3 @@
-markdow# Joseph's Token Exchange
-
 Welcome to Joseph's Token Exchange! This decentralized application (Dapp) allows you to make transactions on both the Sepolia Test Network and a local Hardhat network.
 
 ## Features
